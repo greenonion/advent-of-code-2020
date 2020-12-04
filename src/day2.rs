@@ -24,8 +24,7 @@ impl FromStr for UserPassword {
         let policy = items[0];
         let password = items[1];
         let parts: Vec<&str> = policy.split(" ").collect();
-        let limits: Vec<u32> = parts[0].split("-").map(|x| x.parse().unwrap()).
-            collect();
+        let limits: Vec<u32> = parts[0].split("-").map(|x| x.parse().unwrap()).collect();
         let character = parts[1];
 
         Ok(UserPassword {
@@ -64,8 +63,7 @@ impl FromStr for UserPassword2 {
         let policy = items[0];
         let password = items[1];
         let parts: Vec<&str> = policy.split(" ").collect();
-        let limits: Vec<u32> = parts[0].split("-").map(|x| x.parse().unwrap())
-            .collect();
+        let limits: Vec<u32> = parts[0].split("-").map(|x| x.parse().unwrap()).collect();
         let character = parts[1];
         let pos1 = (limits[0] - 1) as usize;
         let pos2 = (limits[1] - 1) as usize;
@@ -116,14 +114,18 @@ impl Problem {
     }
 
     fn part_a(&self) -> u32 {
-        self.data.iter().
-            map(|l| UserPassword::from_str(&l).unwrap()).
-            filter(|up| up.is_valid()).count() as u32
+        self.data
+            .iter()
+            .map(|l| UserPassword::from_str(&l).unwrap())
+            .filter(|up| up.is_valid())
+            .count() as u32
     }
 
     fn part_b(&self) -> u32 {
-        self.data.iter().
-            map(|l| UserPassword2::from_str(&l).unwrap()).
-            filter(|up| up.is_valid()).count() as u32
+        self.data
+            .iter()
+            .map(|l| UserPassword2::from_str(&l).unwrap())
+            .filter(|up| up.is_valid())
+            .count() as u32
     }
 }

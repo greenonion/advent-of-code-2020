@@ -7,14 +7,13 @@ use std::str::FromStr;
 #[derive(Debug)]
 enum Direction {
     Down,
-    Right
+    Right,
 }
 
-#[derive(PartialEq)]
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 enum SquareKind {
     Open,
-    Tree
+    Tree,
 }
 
 impl FromStr for SquareKind {
@@ -22,9 +21,9 @@ impl FromStr for SquareKind {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         if s == "." {
-            return Ok(SquareKind::Open)
+            return Ok(SquareKind::Open);
         } else if s == "#" {
-            return Ok(SquareKind::Tree)
+            return Ok(SquareKind::Tree);
         }
 
         Ok(SquareKind::Open)
@@ -33,16 +32,17 @@ impl FromStr for SquareKind {
 
 #[derive(Debug)]
 struct Level {
-    squares: Vec<SquareKind>
+    squares: Vec<SquareKind>,
 }
 
 impl FromStr for Level {
     type Err = ParseIntError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let squares = s.chars().
-            map(|c| c.to_string().parse::<SquareKind>().unwrap()).
-            collect();
+        let squares = s
+            .chars()
+            .map(|c| c.to_string().parse::<SquareKind>().unwrap())
+            .collect();
         Ok(Level { squares: squares })
     }
 }
@@ -63,7 +63,10 @@ impl Problem {
             .map(|x| x.parse::<Level>().unwrap())
             .collect();
 
-        Problem { data: v, position: Point { x: 0, y: 0} }
+        Problem {
+            data: v,
+            position: Point { x: 0, y: 0 },
+        }
     }
 
     pub fn solve() {
@@ -77,20 +80,24 @@ impl Problem {
     }
 
     fn part_b(&mut self) -> u64 {
-        self.trees_at_slope(1, 1)  *
-            self.trees_at_slope(3, 1) *
-            self.trees_at_slope(5, 1) *
-            self.trees_at_slope(7, 1) *
-            self.trees_at_slope(1, 2)
+        self.trees_at_slope(1, 1)
+            * self.trees_at_slope(3, 1)
+            * self.trees_at_slope(5, 1)
+            * self.trees_at_slope(7, 1)
+            * self.trees_at_slope(1, 2)
     }
 
     fn trees_at_slope(&mut self, right: usize, down: usize) -> u64 {
-        self.position = Point { x: 0, y: 0};
+        self.position = Point { x: 0, y: 0 };
         let mut trees = 0;
 
         while !self.is_at_bottom() {
-            for _ in 0..right { self.move_to(Direction::Right); }
-            for _ in 0..down { self.move_to(Direction::Down); }
+            for _ in 0..right {
+                self.move_to(Direction::Right);
+            }
+            for _ in 0..down {
+                self.move_to(Direction::Down);
+            }
 
             if *self.square() == SquareKind::Tree {
                 trees += 1;
@@ -110,12 +117,8 @@ impl Problem {
 
     fn move_to(&mut self, direction: Direction) -> &SquareKind {
         match direction {
-            Direction::Right => {
-                self.move_right()
-            },
-            Direction::Down => {
-                self.move_down()
-            }
+            Direction::Right => self.move_right(),
+            Direction::Down => self.move_down(),
         }
     }
 
@@ -140,5 +143,5 @@ impl Problem {
 #[derive(Debug)]
 struct Point {
     x: usize,
-    y: usize
+    y: usize,
 }
